@@ -1,15 +1,8 @@
 package cn.remering.customcraft.config
 
 import cn.remering.customcraft.CustomCraft
-import cn.remering.customcraft.predicate.logic.AndPredicate
-import cn.remering.customcraft.predicate.player.PlayerHasPermissionPredicate
 import cn.remering.customcraft.recipe.Recipe
-import cn.remering.customcraft.recipe.SimpleRecipe
-import org.bukkit.Material
-import org.bukkit.NamespacedKey
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.inventory.ItemStack
-import java.nio.file.Path
 
 const val CONFIG_PATH = "config.yml"
 const val RECIPE_PATH = "recipe.yml"

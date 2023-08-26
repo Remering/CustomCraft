@@ -22,7 +22,7 @@ class OrPredicate (
 
     private val predicates = arrayListOf<RecipePredicate<*>>()
 
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "DEPRECATION")
     override fun validate(): String? {
         val rules = map[RULES_PATH] as? List<Map<String, Any>> ?: return "No rules specified"
          rules.forEach { rule ->

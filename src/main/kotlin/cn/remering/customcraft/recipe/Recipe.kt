@@ -6,7 +6,6 @@ import org.bukkit.Keyed
 import org.bukkit.NamespacedKey
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.inventory.ItemStack
-import java.util.function.Predicate
 import java.util.regex.Pattern
 
 interface Recipe: ConfigurationSerializable, Keyed, Comparable<Recipe> {

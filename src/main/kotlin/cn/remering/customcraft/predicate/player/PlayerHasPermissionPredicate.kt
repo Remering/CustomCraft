@@ -8,6 +8,7 @@ private const val NAMESPACED_KEY = "player-has-permission"
 class PlayerHasPermissionPredicate (
     private val permission: String
 ): RecipePredicate<PlayerHasPermissionPredicate> {
+    @Suppress("DEPRECATION")
     companion object: AbstractRecipePredicateBuilder<PlayerHasPermissionPredicate>(
         NamespacedKey(CUSTOM_CRAFT_NAMESPACE, NAMESPACED_KEY)
     ) {

@@ -15,6 +15,7 @@ class ShapeRecipeConsumePredicate (
     private val replacement: Map<String, ItemStack>
 ): RecipePredicate<ShapeRecipeConsumePredicate> {
 
+    @Suppress("DEPRECATION")
     companion object: AbstractRecipePredicateBuilder<ShapeRecipeConsumePredicate>(
         NamespacedKey(CUSTOM_CRAFT_NAMESPACE, NAMESPACED_KEY)
     ) {
