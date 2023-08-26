@@ -2,7 +2,10 @@ package cn.remering.customcraft.registry
 
 import cn.remering.customcraft.recipe.Recipe
 import cn.remering.customcraft.predicate.RecipePredicateBuilder
+import cn.remering.customcraft.predicate.logic.AndPredicate
+import cn.remering.customcraft.predicate.logic.OrPredicate
 import cn.remering.customcraft.predicate.player.PlayerHasPermissionPredicate
+import cn.remering.customcraft.predicate.recipe.ShapeRecipeConsumePredicate
 import org.bukkit.Keyed
 import org.bukkit.NamespacedKey
 import org.bukkit.Registry
@@ -45,6 +48,9 @@ val RECIPE_PREDICATE_BUILDER_REGISTRY = MapRegistry<RecipePredicateBuilder<*>>()
 
 fun registerRecipePredicateBuilders() {
     RECIPE_PREDICATE_BUILDER_REGISTRY.register(PlayerHasPermissionPredicate)
+    RECIPE_PREDICATE_BUILDER_REGISTRY.register(ShapeRecipeConsumePredicate)
+    RECIPE_PREDICATE_BUILDER_REGISTRY.register(AndPredicate)
+    RECIPE_PREDICATE_BUILDER_REGISTRY.register(OrPredicate)
 }
 
 val RECIPE_REGISTER = MapRegistry<Recipe>()

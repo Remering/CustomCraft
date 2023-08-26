@@ -34,6 +34,15 @@ abstract class AbstractRecipePredicateBuilder<P: RecipePredicate>(
     private val key: NamespacedKey
 ) : RecipePredicateBuilder<P> {
     override fun getKey() = key
+
+    fun validateKey(map: Map<String, Any>): Boolean {
+        val keyStr = map[KEY_PATH] as? String ?: return false
+        return keyStr == key.toString()
+    }
+
+    fun putKey(map: MutableMap<String, Any>) {
+        map[KEY_PATH] = key.toString()
+    }
 }
 
 const val CUSTOM_CRAFT_NAMESPACE = "customcraft"

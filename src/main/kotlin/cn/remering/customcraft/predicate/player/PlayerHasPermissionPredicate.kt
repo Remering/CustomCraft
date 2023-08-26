@@ -12,15 +12,14 @@ class PlayerHasPermissionPredicate private constructor(
         NamespacedKey(CUSTOM_CRAFT_NAMESPACE, NAMESPACED_KEY)
     ) {
         override fun serialize(map: Map<String, Any>): PlayerHasPermissionPredicate? {
-            val keyStr = map[KEY_PATH] ?: return null
-            if (keyStr != key.toString()) return null
+            if (!validateKey(map)) return null
             val permission = map[PERMISSION_PATH] as String? ?: return null
             return PlayerHasPermissionPredicate(permission)
         }
 
         override fun deserialize(predicate: PlayerHasPermissionPredicate): Map<String, Any> {
             val map = mutableMapOf<String, Any>()
-            map[KEY_PATH] = key.toString()
+            putKey(map)
             map[PERMISSION_PATH] = predicate.permission
             return map
         }
