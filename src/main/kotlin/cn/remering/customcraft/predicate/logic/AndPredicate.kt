@@ -32,7 +32,7 @@ class AndPredicate (
         if (predicates.isNotEmpty()) return null
         val rules = map[RULES_PATH] as? List<Map<String, Any>> ?: return "No rules specified"
         rules.forEach { rule ->
-            val keySplit = (rule[KEY_PATH] as? String)?.split(pattern, 1)?: return "No rule's key specified"
+            val keySplit = (rule[KEY_PATH] as? String)?.split(pattern, 2)?: return "No rule's key specified"
             val namespacedKey = NamespacedKey(keySplit[0], keySplit[1])
             val predicateBuilder = RECIPE_PREDICATE_BUILDER_REGISTRY[namespacedKey] ?: return "No such predicate where key is $namespacedKey"
             val recipePredicate = predicateBuilder.build(rule) ?: return "Predicate builder returns null with $rule"

@@ -34,14 +34,13 @@ class SimpleRecipe(
     companion object {
 
         private val pattern = Pattern.compile(":")
-
         @JvmStatic
         @Suppress("DEPRECATION", "UNCHECKED_CAST", "unused")
-        fun valueOf(map: Map<String, Any>): SimpleRecipe? {
-            val keySplit= (map["key"] as? String)?.split(pattern, 1)?: return null
+        fun deserialize(map: Map<String, Any>): SimpleRecipe? {
+            val keySplit= (map["key"] as? String)?.split(pattern, 2)?: return null
             val namespacedKey = NamespacedKey(keySplit[0], keySplit[1])
             val predicateMap = map["predicate"] as? Map<String, Any>?: return null
-            val predicateKey = (predicateMap["key"] as? String)?.split(pattern, 1)?: return null
+            val predicateKey = (predicateMap["key"] as? String)?.split(pattern, 2)?: return null
             val namespacedPredicateKey = NamespacedKey(predicateKey[0], predicateKey[1])
             val predicateBuilder = RECIPE_PREDICATE_BUILDER_REGISTRY[namespacedPredicateKey] ?: return null
             val predicate = predicateBuilder.build(predicateMap)?: return null
