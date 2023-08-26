@@ -3,6 +3,7 @@ package cn.remering.customcraft.predicate
 import cn.remering.customcraft.recipe.Recipe
 import org.bukkit.Keyed
 import org.bukkit.NamespacedKey
+import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.entity.HumanEntity
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
@@ -11,6 +12,7 @@ import java.util.function.Predicate
 interface RecipeInventory {
     val inputItemStackList: MutableList<ItemStack>
     val outputItemStackList: MutableList<ItemStack>
+    val outputSize: Int
     val processTicks: Long
     val inventory: Inventory
 }
@@ -21,16 +23,16 @@ interface RecipeInfo {
     val inventory: RecipeInventory
 }
 
-interface RecipePredicate: Predicate<RecipeInfo> {
+interface RecipePredicate<S: RecipePredicate<S>>: Predicate<RecipeInfo>, ConfigurationSerializable {
     fun validate(): String?
 }
 
-interface RecipePredicateBuilder<P: RecipePredicate>: Keyed {
-    fun serialize(map: Map<String, Any>): P?
-    fun deserialize(predicate: P): Map<String, Any>
+interface RecipePredicateBuilder<P: RecipePredicate<P>>: Keyed {
+    fun build(map: Map<String, Any>): P?
+
 }
 
-abstract class AbstractRecipePredicateBuilder<P: RecipePredicate>(
+abstract class AbstractRecipePredicateBuilder<P: RecipePredicate<P>>(
     private val key: NamespacedKey
 ) : RecipePredicateBuilder<P> {
     override fun getKey() = key

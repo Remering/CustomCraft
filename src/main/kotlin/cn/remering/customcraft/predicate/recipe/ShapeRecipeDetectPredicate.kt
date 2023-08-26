@@ -5,26 +5,25 @@ import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 
-
-private const val NAMESPACED_KEY = "shape-recipe-consume"
+private const val NAMESPACED_KEY = "shape-recipe-detect"
 private const val PATTERN_PATH = "pattern"
 private const val REPLACEMENT_PATH = "replacement"
-
-class ShapeRecipeConsumePredicate (
+class ShapeRecipeDetectPredicate (
     private val pattern: List<String>,
     private val replacement: Map<String, ItemStack>
-): RecipePredicate<ShapeRecipeConsumePredicate> {
+): RecipePredicate<ShapeRecipeDetectPredicate> {
 
-    companion object: AbstractRecipePredicateBuilder<ShapeRecipeConsumePredicate>(
+    companion object: AbstractRecipePredicateBuilder<ShapeRecipeDetectPredicate>(
         NamespacedKey(CUSTOM_CRAFT_NAMESPACE, NAMESPACED_KEY)
     ) {
         @Suppress("UNCHECKED_CAST")
-        override fun build(map: Map<String, Any>): ShapeRecipeConsumePredicate? {
+        override fun build(map: Map<String, Any>): ShapeRecipeDetectPredicate? {
             if (!validateKey(map)) return null
             val pattern = map[PATTERN_PATH] as? MutableList<String> ?: return null
             val replacement = map[REPLACEMENT_PATH] as? Map<String, Map<String, Any>> ?: return null
-            return ShapeRecipeConsumePredicate(pattern, replacement.mapValues { ItemStack.deserialize(it.value) })
+            return ShapeRecipeDetectPredicate(pattern, replacement.mapValues { ItemStack.deserialize(it.value) })
         }
+
     }
 
     private val expected = mutableListOf<ItemStack>()
@@ -68,16 +67,8 @@ class ShapeRecipeConsumePredicate (
                 tempActual += airItemStack
             }
         }
-        val result = canCraft(tempExpected, tempActual)
 
-        if (result) {
-            for (itemStack in inventory.inputItemStackList) {
-                if (itemStack.isSimilar(airItemStack)) continue
-                if (!expected.any { it.isSimilar(itemStack) }) continue
-                itemStack.amount--
-            }
-        }
-        return result
+        return canCraft(tempExpected, tempActual)
     }
 
     override fun serialize(): Map<String, Any> {
@@ -87,4 +78,5 @@ class ShapeRecipeConsumePredicate (
         map[REPLACEMENT_PATH] = replacement.mapValues { it.value.serialize() }
         return map
     }
+
 }
