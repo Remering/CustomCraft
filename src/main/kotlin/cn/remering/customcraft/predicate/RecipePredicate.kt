@@ -19,20 +19,18 @@ interface RecipeInventory {
 
 interface RecipeInfo {
     val human: HumanEntity
-    val recipe: Recipe
     val inventory: RecipeInventory
 }
 
-interface RecipePredicate<S: RecipePredicate<S>>: Predicate<RecipeInfo>, ConfigurationSerializable {
+interface RecipePredicate: Predicate<RecipeInfo>, ConfigurationSerializable {
     fun validate(): String?
 }
 
-interface RecipePredicateBuilder<P: RecipePredicate<P>>: Keyed {
+interface RecipePredicateBuilder<P: RecipePredicate>: Keyed {
     fun build(map: Map<String, Any>): P?
-
 }
 
-abstract class AbstractRecipePredicateBuilder<P: RecipePredicate<P>>(
+abstract class AbstractRecipePredicateBuilder<P: RecipePredicate>(
     private val key: NamespacedKey
 ) : RecipePredicateBuilder<P> {
     override fun getKey() = key

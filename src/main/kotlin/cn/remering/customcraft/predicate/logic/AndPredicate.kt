@@ -11,7 +11,7 @@ private const val NAMESPACED_KEY = "and"
 private val pattern = Pattern.compile(":")
 class AndPredicate (
     private val map: Map<String, Any>
-): RecipePredicate<AndPredicate> {
+): RecipePredicate {
 
     @Suppress("DEPRECATION")
     companion object: AbstractRecipePredicateBuilder<AndPredicate>(NamespacedKey(CUSTOM_CRAFT_NAMESPACE, NAMESPACED_KEY)) {
@@ -21,9 +21,9 @@ class AndPredicate (
         }
     }
 
-    private val predicates = arrayListOf<RecipePredicate<*>>()
+    private val predicates = arrayListOf<RecipePredicate>()
 
-    constructor(predicate: List<RecipePredicate<*>>): this(mapOf()) {
+    constructor(predicate: List<RecipePredicate>): this(mapOf()) {
         this.predicates.addAll(predicate)
     }
 

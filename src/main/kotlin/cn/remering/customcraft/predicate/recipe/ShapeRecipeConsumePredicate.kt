@@ -13,7 +13,7 @@ private const val REPLACEMENT_PATH = "replacement"
 class ShapeRecipeConsumePredicate (
     private val pattern: List<String>,
     private val replacement: Map<String, ItemStack>
-): RecipePredicate<ShapeRecipeConsumePredicate> {
+): RecipePredicate {
 
     @Suppress("DEPRECATION")
     companion object: AbstractRecipePredicateBuilder<ShapeRecipeConsumePredicate>(

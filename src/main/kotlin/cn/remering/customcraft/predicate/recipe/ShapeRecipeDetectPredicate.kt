@@ -8,13 +8,14 @@ import org.bukkit.inventory.ItemStack
 private const val NAMESPACED_KEY = "shape-recipe-detect"
 private const val PATTERN_PATH = "pattern"
 private const val REPLACEMENT_PATH = "replacement"
-class ShapeRecipeDetectPredicate (
+
+class ShapeRecipeDetectPredicate(
     private val pattern: List<String>,
     private val replacement: Map<String, ItemStack>
-): RecipePredicate<ShapeRecipeDetectPredicate> {
+) : RecipePredicate {
 
     @Suppress("DEPRECATION")
-    companion object: AbstractRecipePredicateBuilder<ShapeRecipeDetectPredicate>(
+    companion object : AbstractRecipePredicateBuilder<ShapeRecipeDetectPredicate>(
         NamespacedKey(CUSTOM_CRAFT_NAMESPACE, NAMESPACED_KEY)
     ) {
         @Suppress("UNCHECKED_CAST")
@@ -25,6 +26,33 @@ class ShapeRecipeDetectPredicate (
             return ShapeRecipeDetectPredicate(pattern, replacement.mapValues { ItemStack.deserialize(it.value) })
         }
 
+        fun fromItemStackList(itemStackList: List<ItemStack?>): ShapeRecipeDetectPredicate {
+            var currentChar = 'A'
+            val replacement = hashMapOf<String, ItemStack>()
+            val itemStackList = itemStackList.toList()
+            val text = buildString {
+                outerLoop@ for (itemStack in itemStackList) {
+                    if (itemStack == null || itemStack.type == Material.AIR) {
+                        append(' ')
+                        continue
+                    }
+                    itemStack.amount = 1
+                    for ((k, v) in replacement) {
+                        if (v.isSimilar(itemStack)) {
+                            append(k)
+                            continue@outerLoop
+                        }
+                    }
+                    replacement[currentChar.toString()] = itemStack
+                    append(currentChar++)
+                }
+            }
+            val pattern = text.windowed(3, 3, false)
+            return ShapeRecipeDetectPredicate(
+                pattern,
+                replacement
+            )
+        }
     }
 
     private val expected = mutableListOf<ItemStack>()
@@ -35,7 +63,7 @@ class ShapeRecipeDetectPredicate (
                 expected += if (c == ' ') {
                     ItemStack(Material.AIR)
                 } else {
-                    val itemStack = replacement[expected.toString()]
+                    val itemStack = replacement[c.toString()]
                         ?: return "Unknown char $c in pattern $pattern with replacement $replacement"
                     itemStack
                 }

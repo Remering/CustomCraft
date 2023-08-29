@@ -11,8 +11,9 @@ private const val NAMESPACED_KEY = "or"
 private val pattern = Pattern.compile(":")
 class OrPredicate (
     private val map: Map<String, Any>
-): RecipePredicate<OrPredicate> {
+): RecipePredicate {
 
+    @Suppress("DEPRECATION")
     companion object: AbstractRecipePredicateBuilder<OrPredicate>(NamespacedKey(CUSTOM_CRAFT_NAMESPACE, NAMESPACED_KEY)) {
         override fun build(map: Map<String, Any>): OrPredicate? {
             if (!validateKey(map)) return null
@@ -20,7 +21,7 @@ class OrPredicate (
         }
     }
 
-    private val predicates = arrayListOf<RecipePredicate<*>>()
+    private val predicates = arrayListOf<RecipePredicate>()
 
     @Suppress("UNCHECKED_CAST", "DEPRECATION")
     override fun validate(): String? {

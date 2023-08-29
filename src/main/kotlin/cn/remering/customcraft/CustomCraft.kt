@@ -7,6 +7,7 @@ import cn.remering.customcraft.registry.registerConfigSerialization
 import cn.remering.customcraft.registry.registerRecipePredicateBuilders
 import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPIBukkitConfig
+import mc.obliviate.inventory.InventoryAPI
 import org.bukkit.plugin.java.JavaPlugin
 
 class CustomCraft : JavaPlugin() {
@@ -26,6 +27,7 @@ class CustomCraft : JavaPlugin() {
 
     override fun onEnable() {
         CommandAPI.onEnable()
+        InventoryAPI(this).init()
         registerCommands()
         Config.load()
     }

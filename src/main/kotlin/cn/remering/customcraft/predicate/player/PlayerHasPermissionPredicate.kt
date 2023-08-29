@@ -7,7 +7,7 @@ private const val PERMISSION_PATH = "permission"
 private const val NAMESPACED_KEY = "player-has-permission"
 class PlayerHasPermissionPredicate (
     private val permission: String
-): RecipePredicate<PlayerHasPermissionPredicate> {
+): RecipePredicate {
     @Suppress("DEPRECATION")
     companion object: AbstractRecipePredicateBuilder<PlayerHasPermissionPredicate>(
         NamespacedKey(CUSTOM_CRAFT_NAMESPACE, NAMESPACED_KEY)
@@ -17,7 +17,6 @@ class PlayerHasPermissionPredicate (
             val permission = map[PERMISSION_PATH] as String? ?: return null
             return PlayerHasPermissionPredicate(permission)
         }
-
 
     }
 
