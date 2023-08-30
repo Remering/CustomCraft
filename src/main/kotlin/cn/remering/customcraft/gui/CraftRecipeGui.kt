@@ -13,6 +13,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.*
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
+import java.util.Objects
 
 
 class CraftRecipeGui(player: Player) : Gui(player, "$CUSTOM_CRAFT_NAMESPACE:craft-recipe-gui", "Hello, world", InventoryType.WORKBENCH) {
@@ -45,15 +46,20 @@ class CraftRecipeGui(player: Player) : Gui(player, "$CUSTOM_CRAFT_NAMESPACE:craf
             inventory.toList().subList(1, inventory.size)
                 .forEachIndexed { index, itemStack ->
                     itemStack.amount--
-                    inventory.setItem(index, itemStack)
+                    inventory.setItem(index + 1, itemStack)
                 }
+            val cursorItem = event.cursor
+            if (cursorItem != null && cursorItem.type == resultItem?.type) {
+                cursorItem.amount++
+                event.cursor = cursorItem
+            }
         }
-        Bukkit.getScheduler().runTaskLater(CustomCraft.self, this::putOutputItem, 1)
+        putOutputItem()
         return true
     }
 
     override fun onDrag(event: InventoryDragEvent): Boolean {
-        Bukkit.getScheduler().runTaskLater(CustomCraft.self, this::putOutputItem, 1)
+        putOutputItem()
         return true
     }
 
