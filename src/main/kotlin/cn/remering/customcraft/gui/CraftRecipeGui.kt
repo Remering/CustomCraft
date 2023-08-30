@@ -5,6 +5,7 @@ import cn.remering.customcraft.predicate.CUSTOM_CRAFT_NAMESPACE
 import cn.remering.customcraft.predicate.RecipeInfo
 import cn.remering.customcraft.predicate.RecipeInventory
 import cn.remering.customcraft.registry.RECIPE_REGISTRY
+import com.google.gson.Gson
 import mc.obliviate.inventory.Gui
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -13,10 +14,11 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.*
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
-import java.util.Objects
 
 
+private val PLACE_INVENTORY_ACTIONS = arrayOf(InventoryAction.PLACE_ONE, InventoryAction.PLACE_SOME, InventoryAction.PLACE_ALL)
 class CraftRecipeGui(player: Player) : Gui(player, "$CUSTOM_CRAFT_NAMESPACE:craft-recipe-gui", "Hello, world", InventoryType.WORKBENCH) {
+
     private val recipeInfo: RecipeInfo
         get() = object : RecipeInfo {
             override val human: HumanEntity
@@ -37,9 +39,10 @@ class CraftRecipeGui(player: Player) : Gui(player, "$CUSTOM_CRAFT_NAMESPACE:craf
         }
 
     override fun onClick(event: InventoryClickEvent): Boolean {
-        if (event.isLeftClick && event.slot == 0 && event.slotType == InventoryType.SlotType.RESULT) {
-            val resultItem = inventory.getItem(0)
-            if (event.cursor != null && (resultItem == null || resultItem.type == Material.AIR)) {
+        println(Gson().toJson(event))
+        if (event.action == InventoryAction.NOTHING) return true
+        if (event.isLeftClick && event.slotType == InventoryType.SlotType.RESULT) {
+            if (event.action in PLACE_INVENTORY_ACTIONS) {
                 return false
             }
             // now resultItemStack is not null
@@ -48,18 +51,13 @@ class CraftRecipeGui(player: Player) : Gui(player, "$CUSTOM_CRAFT_NAMESPACE:craf
                     itemStack.amount--
                     inventory.setItem(index + 1, itemStack)
                 }
-            val cursorItem = event.cursor
-            if (cursorItem != null && cursorItem.type == resultItem?.type) {
-                cursorItem.amount++
-                event.cursor = cursorItem
-            }
         }
-        putOutputItem()
+        Bukkit.getScheduler().runTaskLater(CustomCraft.self, this::putOutputItem, 1)
         return true
     }
 
     override fun onDrag(event: InventoryDragEvent): Boolean {
-        putOutputItem()
+        Bukkit.getScheduler().runTaskLater(CustomCraft.self, this::putOutputItem, 1)
         return true
     }
 
