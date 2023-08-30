@@ -39,7 +39,6 @@ class CraftRecipeGui(player: Player) : Gui(player, "$CUSTOM_CRAFT_NAMESPACE:craf
         }
 
     override fun onClick(event: InventoryClickEvent): Boolean {
-        println(Gson().toJson(event))
         if (event.action == InventoryAction.NOTHING) return true
         if (event.isLeftClick && event.slotType == InventoryType.SlotType.RESULT) {
             if (event.action in PLACE_INVENTORY_ACTIONS) {
