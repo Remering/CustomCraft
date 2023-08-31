@@ -5,7 +5,6 @@ import cn.remering.customcraft.predicate.CUSTOM_CRAFT_NAMESPACE
 import cn.remering.customcraft.predicate.RecipeInfo
 import cn.remering.customcraft.predicate.RecipeInventory
 import cn.remering.customcraft.registry.RECIPE_REGISTRY
-import com.google.gson.Gson
 import mc.obliviate.inventory.Gui
 import org.bukkit.Bukkit
 import org.bukkit.Material

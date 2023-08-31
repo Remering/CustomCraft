@@ -12,9 +12,6 @@ import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.*
-import org.bukkit.inventory.Inventory
-import org.bukkit.inventory.ItemStack
-import java.util.*
 
 
 class EditRecipeGui(player: Player, private val key: String) : Gui(player, "$CUSTOM_CRAFT_NAMESPACE:edit-recipe-gui", "Hello, world", InventoryType.WORKBENCH) {
