@@ -13,6 +13,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.*
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
+import kotlin.math.min
 
 
 private val PLACE_INVENTORY_ACTIONS = arrayOf(InventoryAction.PLACE_ONE, InventoryAction.PLACE_SOME, InventoryAction.PLACE_ALL)
@@ -58,7 +59,7 @@ class CraftRecipeGui(player: Player) : Gui(player, "$CUSTOM_CRAFT_NAMESPACE:craf
             val currentItem = event.currentItem
             if (cursorItem != null && cursorItem.type != Material.AIR && cursorItem.type == event.currentItem?.type) {
                 val amountIfClicked = player.itemOnCursor.amount + currentItem!!.amount
-                if (amountIfClicked < inventory.maxStackSize) {
+                if (amountIfClicked < min(cursorItem.type.maxStackSize, inventory.maxStackSize)) {
                     player.itemOnCursor.amount = amountIfClicked
                     decreaseItemStackAmountInCraftSlot()
                 }
