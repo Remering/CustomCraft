@@ -90,7 +90,9 @@ class CraftRecipeGui(player: Player) : Gui(player, "$CUSTOM_CRAFT_NAMESPACE:craf
     override fun onClose(event: InventoryCloseEvent?) {
         inventory.toList().subList(1, inventory.size)
             .filter { it != null && it.type != Material.AIR }
-            .forEach { player.inventory.addItem(it) }
+            .map { player.inventory.addItem(it) }
+            .flatMap { it.values }
+            .forEach { player.world.dropItem(player.location, it) }
         inventory.setItem(0, null)
     }
 }
