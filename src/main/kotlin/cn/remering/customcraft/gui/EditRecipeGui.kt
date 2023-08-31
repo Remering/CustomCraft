@@ -74,6 +74,7 @@ class EditRecipeGui(player: Player, private val key: String) : Gui(player, "$CUS
             0,
         )
 
+        RECIPE_REGISTRY.unregister(namespacedKey)
         RECIPE_REGISTRY.register(recipe)
         Config.saveRecipes()
         player.sendMessage("Saved recipe with key: $namespacedKey")

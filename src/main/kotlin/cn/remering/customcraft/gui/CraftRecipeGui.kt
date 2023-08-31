@@ -38,18 +38,33 @@ class CraftRecipeGui(player: Player) : Gui(player, "$CUSTOM_CRAFT_NAMESPACE:craf
             }
         }
 
+    private fun decreaseItemStackAmountInCraftSlot() {
+        inventory.toList().subList(1, inventory.size)
+            .forEachIndexed { index, itemStack ->
+                if (itemStack == null) {
+                    return@forEachIndexed
+                }
+                itemStack.amount--
+                inventory.setItem(index + 1, itemStack)
+            }
+    }
+
     override fun onClick(event: InventoryClickEvent): Boolean {
         if (event.action == InventoryAction.NOTHING) return true
         if (event.isLeftClick && event.slotType == InventoryType.SlotType.RESULT) {
             if (event.action in PLACE_INVENTORY_ACTIONS) {
+                val cursorItem = event.cursor
+                val currentItem = event.currentItem
+                if (cursorItem != null && cursorItem.type != Material.AIR && cursorItem.type == event.currentItem?.type) {
+                    val amountIfClicked = player.itemOnCursor.amount + currentItem!!.amount
+                    if (amountIfClicked < inventory.maxStackSize) {
+                        player.itemOnCursor.amount = amountIfClicked
+                        decreaseItemStackAmountInCraftSlot()
+                    }
+                }
                 return false
             }
-            // now resultItemStack is not null
-            inventory.toList().subList(1, inventory.size)
-                .forEachIndexed { index, itemStack ->
-                    itemStack.amount--
-                    inventory.setItem(index + 1, itemStack)
-                }
+            decreaseItemStackAmountInCraftSlot()
         }
         Bukkit.getScheduler().runTaskLater(CustomCraft.self, this::putOutputItem, 1)
         return true
